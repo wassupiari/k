@@ -98,26 +98,33 @@
 			});
 		});
 	
+		function isValidEmail(email) {
+		    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+		}
 		
 		$(document).ready(function(){
-			$("#em").keyup(function(){
-				var x = $("#em").val();
-				if(x != ''){
-					$.post("./CheckEmail",{"em" : x},function(data){
-						if(data == '0'){
-							$("#errEmail").html("email già in uso").css({"color" : "red"});
-						}
-						else{
-							$("#errEmail").html("");
-						}
-						});
-					}
-				else{
-					$("#errEmail").html("");
-				}
+		    $("#em").keyup(function(){
+		        var x = $("#em").val();
+		        if(x != ''){
+		            if (!isValidEmail(x)) {
+		                $("#errEmail").html("Formato email non valido").css({"color" : "red"});
+		                return;
+		            }
 
-			});
+		            $.post("./CheckEmail",{"em" : x},function(data){
+		                if(data == '0'){
+		                    $("#errEmail").html("email già in uso").css({"color" : "red"});
+		                }
+		                else{
+		                    $("#errEmail").html("");
+		                }
+		            });
+		        } else {
+		            $("#errEmail").html("");
+		        }
+		    });
 		});
+
 	
 
 
